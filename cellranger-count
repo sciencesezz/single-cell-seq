@@ -1,0 +1,33 @@
+#!/bin/bash -e
+
+#This a Slurm script for the single-cell pipeline
+
+#SBATCH --job-name=cellranger-count
+#SBATCH --account=vuw03876
+#SBATCH --time=12:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64GB
+#SBATCH --output=/nesi/nobackup/vuw03876/single-cell/sc_count%j.out
+#SBATCH --error=/nesi/nobackup/vuw03876/single-cell/sc_count%j.err
+#SBATCH --mail-type=ALL
+#SBATCH --mail-type=TIME_LIMIT_80
+#SBATCH --mail-user=sarah.sczelecki@vuw.ac.nz
+
+BASE_PATH="/nesi/nobackup/vuw03876/single-cell"
+
+#module loading
+
+module load CellRanger/7.1.0
+
+#Define input and output directories and variables
+
+INPUT="$BASE_PATH/data/SCZ13461-Trimmed/"
+OUTPUT="$BASE_PATH/results"
+GENOME="$BASE_PATH/genomes"
+
+#run cell ranger count
+cellranger count --id=sc_count_test_singlesample \
+  --fastqs="$INPUT" \
+  --sample=3_2week_group1_Trimmed \
+  --transcriptome="$GENOME/refdata-gex-GRCm39-2024-A"
