@@ -1,0 +1,8 @@
+#!/bin/bash
+#script for single cell fastqc analysis in parallel
+
+for fq in /nesi/nobackup/vuw03876/single-cell/data/SCZ13461-Trimmed/fastq_merged/*.fastq.gz
+do
+sbatch -t 0-3:00 -c 1 --job-name fastqc-parallel --mem 20G --output="/nesi/nobackup/vuw03876/single-cell/slurm-repo/fastqc_paralell%j.out" --error="/nesi/nobackup/vuw03876/single-cell/slurm-repo/fastqc_paralell%j.err" --mail-type="ALL" --mail-user="sarah.sczelecki@vuw.ac.nz" --wrap="bash /nesi/nobackup/vuw03876/single-cell/02_fastqc_parallel.sh $fq"
+sleep 5	# wait 5 seconds between each job submission
+done
