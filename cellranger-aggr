@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+#This a Slurm script for the single-cell pipeline fixed RNA
+#agrregating the samples that you want to run in cell-ranger
+
+#SBATCH --job-name=cellranger-aggr
+#SBATCH --account=vuw03876
+#SBATCH --time=12:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=128GB
+#SBATCH --output=/nesi/nobackup/vuw03876/single-cell/aggr%j.out
+#SBATCH --error=/nesi/nobackup/vuw03876/single-cell/aggr%j.err
+#SBATCH --mail-type=ALL
+#SBATCH --mail-type=TIME_LIMIT_80
+#SBATCH --mail-user=sarah.sczelecki@vuw.ac.nz
+
+#module loading
+
+module load CellRanger/7.1.0
+
+#Define input and output directories and variables
+
+cd /nesi/nobackup/vuw03876/single-cell
+
+#run cell ranger count
+cellranger aggr --id=aged_ovaries --csv=/nesi/nobackup/vuw03876/single-cell/aggr-config-2.csv --normalize=mapped
